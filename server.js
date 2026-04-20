@@ -8,7 +8,16 @@ import placeRoutes from "./routes/placeRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 dotenv.config();
 
+// 1. Validate Critical Env Variables Immediately
+
+if (!process.env.JWT_SECRET) {
+  console.error("FATAL ERROR: JWT_SECRET is not defined.");
+  process.exit(1);
+}
+
 const app = express();
+
+// Middleware
 
 app.use(express.json());
 app.use(cookieParser());
@@ -20,13 +29,17 @@ app.use(
   }),
 );
 
+// Routes
+
 app.use("/auth", authRoutes);
 app.use("/places", placeRoutes);
-app.use("/bookings", bookingRoutes)
+app.use("/bookings", bookingRoutes);
 
 app.get("/health", (req, res) => {
   res.json({ message: "API is running" });
 });
+
+// 2. Start Logic
 
 async function startServer() {
   try {
@@ -34,10 +47,10 @@ async function startServer() {
 
     const PORT = process.env.PORT || 5001;
     app.listen(PORT, () => {
-      console.log(`Server is running on http://localhost:${PORT}`);
+      console.log(`🚀 Server is running on http://localhost:${PORT}`);
     });
   } catch (err) {
-    console.error("Server failed to start:", err.message);
+    console.error("❌ Database connection failed:", err.message);
     process.exit(1);
   }
 }

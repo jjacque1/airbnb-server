@@ -8,12 +8,6 @@ export function requireAuth(req, res, next) {
       return res.status(401).json({ message: "Not authenticated" });
     }
 
-    if (!process.env.JWT_SECRET) {
-      return res
-        .status(500)
-        .json({ message: "JWT_SECRET is missing from .env" });
-    }
-
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     req.user = decoded;
