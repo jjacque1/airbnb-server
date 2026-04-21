@@ -25,11 +25,12 @@ export async function createPlace(req, res) {
       checkIn === undefined ||
       checkOut === undefined ||
       maxGuests === undefined ||
-      price === undefined
+      price === undefined ||
+      photos.length === 0
     ) {
       return res.status(400).json({
         message:
-          "title, address, description, checkIn, checkOut, maxGuests, and price are required",
+          "title, address, description, checkIn, checkOut, maxGuests, photos, and price are required",
       });
     }
 
@@ -67,7 +68,7 @@ export async function getUserPlaces(req, res) {
 
     return res.status(200).json({ places });
   } catch (err) {
-    console.error(err)
+    console.error(err);
     return res.status(500).json({ message: "Failed to fetch user places" });
   }
 }
