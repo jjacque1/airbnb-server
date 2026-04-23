@@ -276,7 +276,7 @@ export async function patchPlace(req, res) {
 
     return res
       .status(200)
-      .json({ message: "Place patched successfully", place });
+      .json({ message: "Place updated successfully", place });
   } catch (err) {
     return res.status(500).json({ message: "Server error" });
   }
