@@ -79,7 +79,7 @@ export async function createBooking(req, res) {
       price,
     });
 
-    const populatedBooking = await newBooking.populate("place")
+    const populatedBooking = await newBooking.populate("place");
 
     return res.status(201).json({
       message: "Booking created successfully",
@@ -124,6 +124,25 @@ export async function getBookingById(req, res) {
     return res.json(booking);
   } catch (err) {
     return res.status(500).json({ message: "Failed to fetch booking" });
+  }
+}
+
+export async function getActiveBookings(req, res) {
+  try {
+    const { placeId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(placeId)) {
+      return res.status(400).json({ message: "Invalid place id" });
+    }
+
+    const activeBookings = await Booking.find({
+      place: placeId,
+      status: "active",
+    }).select("checkIn checkOut")
+
+    return res.json(activeBookings);
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to fetch place bookings"})
   }
 }
 
