@@ -95,9 +95,21 @@ export async function getPlaceById(req, res) {
 
 export async function getAllPlaces(req, res) {
   try {
-    const places = await Place.find();
+    const { page = 1, limit = 8 } = req.query;
 
-    return res.status(200).json({ places });
+    const pageNumber = Number(page);
+    const limitNumber = Number(limit);
+
+    const skip = (pageNumber - 1) * limitNumber;
+
+    const totalPlaces = await Place.countDocuments();
+    const totalPages = Math.ceil(totalPlaces / limitNumber);
+
+    const places = await Place.find().skip(skip).limit(limitNumber);
+
+    return res
+      .status(200)
+      .json({ places, totalPages, currentPage: pageNumber, totalPlaces });
   } catch (err) {
     return res.status(500).json({ message: "Server error" });
   }
