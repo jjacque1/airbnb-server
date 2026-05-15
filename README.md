@@ -21,12 +21,14 @@ The goal of this project is to replicate the **core backend architecture of Airb
 - httpOnly cookies
 - bcrypt password hashing
 
-## Frontend (Planned)
+## Frontend
 
 - React
 - Vite
 - React Router
 - Context API
+- Axios
+- React DayPicker
 
 ## Other Planned Tools
 
@@ -36,7 +38,41 @@ The goal of this project is to replicate the **core backend architecture of Airb
 
 ---
 
-# Current Backend Features
+# Current Frontend Features
+
+## Authentication UI
+
+- Register page
+- Login page
+- Logout flow
+- Protected routes
+- AuthContext for global user state
+
+## Listings UI
+
+- Homepage listings grid
+- Listing details page
+- User listings dashboard
+- Create listing form
+- Edit listing form
+- Delete listing flow
+
+## Booking UI
+
+- Reservation form on listing details page
+- Availability calendar with disabled unavailable dates
+- Booking validation before submission
+- User bookings page
+- Booking details page
+- Booking cancellation flow
+
+## UX Features
+
+- Skeleton loading states
+- Responsive layouts
+- Error and success messaging
+- Disabled submit states during async requests
+- Consistent reusable card layouts
 
 ## Authentication
 
@@ -103,9 +139,12 @@ Users can book listings with full validation and availability checks.
 
 - Prevent booking your own listing
 - Date validation (checkOut > checkIn)
+- Frontend + backend overlap validation
 - Overlapping booking prevention
 - Availability based on active bookings only
+- Disabled unavailable dates in calendar UI
 - Booking cancellation (status-based, not deletion)
+- Cancelled bookings reopen availability
 
 ### Booking Fields
 
@@ -172,9 +211,12 @@ Users can book listings with full validation and availability checks.
 
 ## Booking System
 
-- Users book listings
-- Availability is enforced via date overlap checks
-- Cancelled bookings do not block availability
+- Users can reserve listings through a calendar-based booking flow
+- Frontend validates unavailable date ranges before submission
+- Backend enforces overlap protection as the source of truth
+- Active bookings block overlapping reservations
+- Cancelled bookings no longer block availability
+- Users can cancel reservations from the booking details page
 
 ## User Dashboard
 
@@ -262,6 +304,14 @@ This project is designed to practice building a **production-style REST API** us
 # Status
 
 Backend complete (Auth, Places, Bookings)
-Frontend in progress
+
+Frontend currently includes:
+- Authentication flows
+- Listings pages
+- Booking flows
+- Availability calendar UX
+- Booking management pages
+
+Additional UI polish and advanced features are in progress.
 
 ---
