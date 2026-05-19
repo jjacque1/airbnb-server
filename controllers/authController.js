@@ -9,10 +9,29 @@ export async function registerUser(req, res) {
     if (!email || !password || !fullName) {
       return res
         .status(400)
-        .json({ message: "email, password, and fullName are required" });
+        .json({ message: "email, password, and fullName are required." });
     }
 
     const normalizedEmail = email.trim().toLowerCase();
+    const trimmedFullName = fullName.trim();
+
+    if (!normalizedEmail || !trimmedFullName) {
+      return res
+        .status(400)
+        .json({ message: "email and fullName cannot be empty." });
+    }
+
+    if (!normalizedEmail.includes("@") || !normalizedEmail.includes(".")) {
+      return res
+        .status(400)
+        .json({ message: "Please enter a valid email address." });
+    }
+
+    if (password.length < 12) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 12 characters long." });
+    }
 
     const existingUser = await User.findOne({ email: normalizedEmail });
 
@@ -26,7 +45,7 @@ export async function registerUser(req, res) {
     const user = await User.create({
       email: normalizedEmail,
       passwordHash,
-      fullName: fullName.trim(),
+      fullName: trimmedFullName,
     });
 
     const token = signToken(user._id);
