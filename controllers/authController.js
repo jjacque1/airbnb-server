@@ -36,7 +36,9 @@ export async function registerUser(req, res) {
     const existingUser = await User.findOne({ email: normalizedEmail });
 
     if (existingUser) {
-      return res.status(409).json({ message: "User already exists" });
+      return res
+        .status(409)
+        .json({ message: "User already exists, please login." });
     }
 
     const saltRounds = 10;
@@ -66,7 +68,7 @@ export async function registerUser(req, res) {
       },
     });
   } catch (err) {
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error." });
   }
 }
 
@@ -77,7 +79,7 @@ export async function loginUser(req, res) {
     if (!email || !password) {
       return res
         .status(400)
-        .json({ message: "email and password are required" });
+        .json({ message: "email and password are required." });
     }
 
     const normalizedEmail = email.trim().toLowerCase();
@@ -85,13 +87,13 @@ export async function loginUser(req, res) {
     const user = await User.findOne({ email: normalizedEmail });
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid email or password." });
     }
 
     const isPasswordMatched = await bcrypt.compare(password, user.passwordHash);
 
     if (!isPasswordMatched) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({ message: "Invalid email or password." });
     }
 
     const token = signToken(user._id);
@@ -113,7 +115,7 @@ export async function loginUser(req, res) {
     });
   } catch (err) {
     console.error("Detailed login error:", err);
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error." });
   }
 }
 
@@ -124,7 +126,7 @@ export async function getProfile(req, res) {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found." });
     }
 
     return res.status(200).json({
@@ -135,7 +137,7 @@ export async function getProfile(req, res) {
       },
     });
   } catch (err) {
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error." });
   }
 }
 
@@ -147,8 +149,8 @@ export async function logoutUser(req, res) {
       secure: true,
     });
 
-    return res.status(200).json({ message: "Logout successful" });
+    return res.status(200).json({ message: "Logout successful." });
   } catch (err) {
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error." });
   }
 }
