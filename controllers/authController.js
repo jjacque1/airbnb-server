@@ -61,6 +61,7 @@ export async function registerUser(req, res) {
 
     return res.status(201).json({
       message: "User created",
+      token,
       user: {
         id: user._id,
         email: user.email,
@@ -107,6 +108,7 @@ export async function loginUser(req, res) {
 
     return res.status(200).json({
       message: "Login successful",
+      token,
       user: {
         id: user._id,
         email: user.email,
@@ -147,7 +149,6 @@ export async function logoutUser(req, res) {
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     return res.status(200).json({ message: "Logout successful." });
